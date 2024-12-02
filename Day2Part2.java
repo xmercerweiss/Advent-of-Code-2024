@@ -46,12 +46,8 @@ class Day2Part2 {
 				if (from == j) continue;
 				else if (to == j && to + 1 == length) break;
 				else if (to == j) to++;
-				System.out.printf("%d -> %d\n", report.get(from), report.get(to));
 				int diff = report.get(to) - report.get(from);
-				if (!isAllowedDifference(diff, isIncr)) {
-					System.out.println("breaking!");
-					continue outer;
-				}
+				if (!isAllowedDifference(diff, isIncr)) continue outer;
 			}
 			return true;
 		}
