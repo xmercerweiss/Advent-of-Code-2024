@@ -1,32 +1,25 @@
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import utils.FileIO;
-import utils.CommandParser;
-import utils.CommandValidator;
 
 
 class Day3Part2 {
 
 	private static final String INP_PATH = "input.txt";
+	private static final String CMD_PARSE_REGEX = "mul\\([0-9]*,[0-9]*\\)|don't\\(\\)|do\\(\\)";
 	private static final String CMD_SPLIT_REGEX = "[,()]";
 
-	private static final String MUL_CMD = String.format("mul(%1$c,%1$c)", CommandValidator.INT_PLACEHOLDER);
 	private static final String DO_CMD = "do()";
 	private static final String DONT_CMD = "don't()";
 
-	private static final String[] COMMANDS = {
-			MUL_CMD,
-			DO_CMD,
-			DONT_CMD
-	};
-
-	private static final CommandParser parser = new CommandParser(COMMANDS);
-
 	public static void main(String[] args) {
 		String input = flatten(FileIO.getLinesOf(INP_PATH));
-		String[] commands = parser.parse(input);
+		String[] commands = parseCommands(input);
 		int result = interpret(commands);
 		System.out.println(result);
 	}
@@ -38,14 +31,21 @@ class Day3Part2 {
 		return mut.toString();
 	}
 
+	private static String[] parseCommands(String input) {
+		ArrayList<String> found = new ArrayList<>();
+		Pattern p = Pattern.compile(CMD_PARSE_REGEX);
+		Matcher m = p.matcher(input);
+		while (m.find())
+			found.add(m.group());
+		return found.toArray(new String[0]);
+	}
+
 	private static int interpret(String[] commands) {
 		int result = 0;
 		boolean isApplied = true;
 		for (String cmd : commands) {
 			String[] split = cmd.split(CMD_SPLIT_REGEX);
 			String operation = split[0] + "()";
-			if (cmd.startsWith("mul")) System.out.printf("%-6b: %s\n", isApplied, cmd);
-			else System.out.printf("%-6c: %s\n", '~', cmd);
 			switch (operation) {
 				case DO_CMD:
 					isApplied = true; break;
