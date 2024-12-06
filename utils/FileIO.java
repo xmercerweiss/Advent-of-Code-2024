@@ -25,6 +25,22 @@ public class FileIO {
         return output;
     }
 
+    public static String getContentsOf(String path) {
+        StringBuilder output = new StringBuilder();
+        try {
+            Scanner fileReader = getFileReader(path);
+            while (fileReader.hasNextLine()) {
+                output.append(fileReader.nextLine());
+                output.append("\n");
+            }
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace(System.out);
+            System.exit(1);
+        }
+        return output.toString();
+    }
+
     private static Scanner getFileReader(String path)
     throws FileNotFoundException {
         File file = new File(path);
