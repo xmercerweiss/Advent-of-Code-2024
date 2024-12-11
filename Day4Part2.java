@@ -4,10 +4,15 @@ import utils.DirectionalMatrix;
 import utils.Directions;
 import utils.FileIO;
 
+import static utils.Directions.*;
+
 public class Day4Part2 {
 
     private static final String INP_PATH = "input.txt";
-    private static final String SEARCHED_WORD = "X-MAS";
+
+    private static final char FIRST = 'M';
+    private static final char MIDDLE = 'A';
+    private static final char LAST = 'S';
 
     private static final DirectionalMatrix matrix;
 
@@ -24,26 +29,23 @@ public class Day4Part2 {
 
     private static int countWord() {
         int output = 0;
-        Coordinate[] starts = matrix.find(Day4Part2.SEARCHED_WORD.charAt(0));
+        Coordinate[] starts = matrix.find(MIDDLE);
+        outer:
         for (Coordinate start : starts) {
-            for (Directions d : Directions.values()) {
-                matrix.move(start);
-                output += doesResolveWord(d) ? 1 : 0;
-            }
+            matrix.move(start);
+            for (Directions d : Directions.values())
+                if (matrix.peekValue(d) == null) continue outer;
+            output += isAtMasX() ? 1 : 0;
         }
         return output;
     }
 
-    private static boolean doesResolveWord(Directions dir) {
-        int length = SEARCHED_WORD.length();
-        int index = 1;
-        while (matrix.peekValue(dir) != null && index < length) {
-            matrix.move(dir);
-            char current = matrix.getValue();
-            char needed = SEARCHED_WORD.charAt(index);
-            if (current != needed && index != 1) return false;
-            index++;
-        }
-        return index >= length;
+    private static boolean isAtMasX() {
+        return (matrix.peekValue(NORTHWEST) == FIRST && matrix.peekValue(SOUTHEAST) == LAST
+                || matrix.peekValue(NORTHWEST) == LAST && matrix.peekValue(SOUTHEAST) == FIRST)
+                &&
+                (matrix.peekValue(SOUTHWEST) == FIRST && matrix.peekValue(NORTHEAST) == LAST
+                || matrix.peekValue(SOUTHWEST) == LAST && matrix.peekValue(NORTHEAST) == FIRST);
     }
+
 }
