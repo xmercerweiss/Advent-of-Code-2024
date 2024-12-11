@@ -18,10 +18,10 @@ public class DirectionalMatrix {
         this.position = new Coordinate(0,0);
     }
 
-    public void move(Coordinate coord) {
-        assert coord.x() >= 0 && coord.x() < width;
-        assert coord.y() >= 0 && coord.y() < height;
-        position = coord;
+    private void validateMatrix() {
+        assert matrix.length == matrix[0].length;
+        for (Character[] row : matrix)
+            assert row.length == matrix.length;
     }
 
     public void move(Directions dir) {
@@ -38,6 +38,12 @@ public class DirectionalMatrix {
             case NORTHWEST: x--; y--; break;
         }
         move(new Coordinate(x, y));
+    }
+
+    public void move(Coordinate coord) throws IndexOutOfBoundsException {
+        if (coord.x() < 0 || coord.x() >= width) throw new IndexOutOfBoundsException();
+        else if (coord.y() < 0 || coord.y() >= height) throw new IndexOutOfBoundsException();
+        position = coord;
     }
 
     public Coordinate[] find(char c) {
@@ -57,6 +63,19 @@ public class DirectionalMatrix {
         return matrix[position.y()][position.x()];
     }
 
+    public Character peekValue(Directions dir) {
+        Coordinate original = getPosition();
+        try {
+            move(dir);
+        }
+        catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+        Character peeked = getValue();
+        move(original);
+        return peeked;
+    }
+
     private Character[][] buildMatrix(String input) {
         ArrayList<Character[]> matrixBuilder = new ArrayList<>();
         for (String line : input.split("\n")) {
@@ -66,11 +85,5 @@ public class DirectionalMatrix {
             matrixBuilder.add(row);
         }
         return matrixBuilder.toArray(new Character[0][]);
-    }
-
-    private void validateMatrix() {
-        assert matrix.length == matrix[0].length;
-        for (Character[] row : matrix)
-            assert row.length == matrix.length;
     }
 }

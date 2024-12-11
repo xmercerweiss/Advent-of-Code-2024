@@ -4,10 +4,10 @@ import utils.DirectionalMatrix;
 import utils.Directions;
 import utils.FileIO;
 
-public class Day4Part1 {
+public class Day4Part2 {
 
     private static final String INP_PATH = "input.txt";
-    private static final String SEARCHED_WORD = "XMAS";
+    private static final String SEARCHED_WORD = "X-MAS";
 
     private static final DirectionalMatrix matrix;
 
@@ -24,7 +24,7 @@ public class Day4Part1 {
 
     private static int countWord() {
         int output = 0;
-        Coordinate[] starts = matrix.find(Day4Part1.SEARCHED_WORD.charAt(0));
+        Coordinate[] starts = matrix.find(Day4Part2.SEARCHED_WORD.charAt(0));
         for (Coordinate start : starts) {
             for (Directions d : Directions.values()) {
                 matrix.move(start);
@@ -41,7 +41,7 @@ public class Day4Part1 {
             matrix.move(dir);
             char current = matrix.getValue();
             char needed = SEARCHED_WORD.charAt(index);
-            if (current != needed) return false;
+            if (current != needed && index != 1) return false;
             index++;
         }
         return index >= length;
