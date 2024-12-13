@@ -1,10 +1,10 @@
 
 import utils.Coordinate;
 import utils.DirectionalMatrix;
-import utils.Directions;
+import utils.Direction;
 import utils.FileIO;
 
-import static utils.Directions.*;
+import static utils.Direction.*;
 
 public class Day4Part2 {
 
@@ -33,7 +33,7 @@ public class Day4Part2 {
         outer:
         for (Coordinate start : starts) {
             matrix.move(start);
-            for (Directions d : Directions.values())
+            for (Direction d : Direction.values())
                 if (matrix.peekValue(d) == null) continue outer;
             output += isAtMasX() ? 1 : 0;
         }

@@ -2,6 +2,7 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DirectionalMatrix {
 
@@ -18,13 +19,24 @@ public class DirectionalMatrix {
         this.position = new Coordinate(0,0);
     }
 
+    private Character[][] buildMatrix(String input) {
+        ArrayList<Character[]> matrixBuilder = new ArrayList<>();
+        for (String line : input.split("\n")) {
+            int length = line.length();
+            Character[] row = new Character[length];
+            for (int i = 0; i < length; i++) row[i] = line.charAt(i);
+            matrixBuilder.add(row);
+        }
+        return matrixBuilder.toArray(new Character[0][]);
+    }
+
     private void validateMatrix() {
         assert matrix.length == matrix[0].length;
         for (Character[] row : matrix)
             assert row.length == matrix.length;
     }
 
-    public void move(Directions dir) {
+    public void move(Direction dir) {
         int x = position.x();
         int y = position.y();
         switch (dir) {
@@ -63,7 +75,7 @@ public class DirectionalMatrix {
         return matrix[position.y()][position.x()];
     }
 
-    public Character peekValue(Directions dir) {
+    public Character peekValue(Direction dir) {
         Coordinate original = getPosition();
         try {
             move(dir);
@@ -76,14 +88,14 @@ public class DirectionalMatrix {
         return peeked;
     }
 
-    private Character[][] buildMatrix(String input) {
-        ArrayList<Character[]> matrixBuilder = new ArrayList<>();
-        for (String line : input.split("\n")) {
-            int length = line.length();
-            Character[] row = new Character[length];
-            for (int i = 0; i < length; i++) row[i] = line.charAt(i);
-            matrixBuilder.add(row);
+    @Override
+    public String toString() {
+        StringBuilder mut = new StringBuilder();
+        for (Character[] row : matrix) {
+            for (char c : row)
+                mut.append(c).append(' ');
+            mut.append("\n");
         }
-        return matrixBuilder.toArray(new Character[0][]);
+        return mut.toString();
     }
 }

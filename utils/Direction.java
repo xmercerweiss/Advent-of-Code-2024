@@ -1,7 +1,7 @@
 
 package utils;
 
-public enum Directions {
+public enum Direction {
     NORTH,
     NORTHEAST,
     EAST,

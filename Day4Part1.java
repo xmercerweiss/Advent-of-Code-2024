@@ -1,7 +1,7 @@
 
 import utils.Coordinate;
 import utils.DirectionalMatrix;
-import utils.Directions;
+import utils.Direction;
 import utils.FileIO;
 
 public class Day4Part1 {
@@ -26,7 +26,7 @@ public class Day4Part1 {
         int output = 0;
         Coordinate[] starts = matrix.find(Day4Part1.SEARCHED_WORD.charAt(0));
         for (Coordinate start : starts) {
-            for (Directions d : Directions.values()) {
+            for (Direction d : Direction.values()) {
                 matrix.move(start);
                 output += doesResolveWord(d) ? 1 : 0;
             }
@@ -34,7 +34,7 @@ public class Day4Part1 {
         return output;
     }
 
-    private static boolean doesResolveWord(Directions dir) {
+    private static boolean doesResolveWord(Direction dir) {
         int length = SEARCHED_WORD.length();
         int index = 1;
         while (matrix.peekValue(dir) != null && index < length) {
