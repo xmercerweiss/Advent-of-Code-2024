@@ -67,7 +67,7 @@ public class DirectionalMatrix {
         return found.toArray(new Coordinate[0]);
     }
 
-    public Coordinate getPosition() {
+    public Coordinate getCurrentCoordinates() {
         return position;
     }
 
@@ -75,8 +75,21 @@ public class DirectionalMatrix {
         return matrix[position.y()][position.x()];
     }
 
+    public Coordinate peekCoordinate(Direction dir) {
+        Coordinate original = getCurrentCoordinates();
+        try {
+            move(dir);
+        }
+        catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+        Coordinate peeked = getCurrentCoordinates();
+        move(original);
+        return peeked;
+    }
+
     public Character peekValue(Direction dir) {
-        Coordinate original = getPosition();
+        Coordinate original = getCurrentCoordinates();
         try {
             move(dir);
         }

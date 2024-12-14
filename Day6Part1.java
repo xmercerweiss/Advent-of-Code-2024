@@ -33,12 +33,12 @@ public class Day6Part1 {
         Direction heading = Direction.NORTH;
         Character next;
         while ((next = matrix.peekValue(heading)) != null) {
-            positions.add(matrix.getPosition());
+            positions.add(matrix.getCurrentCoordinates());
             if (next.equals(OBSTACLE))
                 heading = getRightTurn(heading);
             else matrix.move(heading);
         }
-        positions.add(matrix.getPosition());
+        positions.add(matrix.getCurrentCoordinates());
     }
 
     private static Direction getRightTurn(Direction d) {
