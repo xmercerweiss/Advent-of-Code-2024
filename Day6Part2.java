@@ -3,7 +3,6 @@ import utils.*;
 
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class Day6Part2 {
 
@@ -35,10 +34,8 @@ public class Day6Part2 {
         Character next;
         while ((next = matrix.peekValue(heading)) != null) {
             Position current = getCurrentPosition();
-            //System.out.println(current);
             if (output.passedBy(current)) {
                 output.setIsLoop(true);
-                //System.out.println("LOOP!");
                 break;
             }
             output.addPosition(current);
@@ -61,8 +58,6 @@ public class Day6Part2 {
     }
 
     private static void initSimulation() {
-        //System.out.println("\n=== NEW SIMULATION! ===");
-        //System.out.println(tempObstacle);
         Coordinate start = matrix.find(GUARD)[0];
         matrix.move(start);
         heading = Direction.NORTH;
